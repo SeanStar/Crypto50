@@ -1,0 +1,1 @@
+"https://chart.googleapis.com/chart?cht=qr&chs=250x250&chl="

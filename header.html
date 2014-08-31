@@ -1,0 +1,86 @@
+<?php
+require('config.php');
+require('checksession.php');
+require('lang/lang.en.php');
+$reqs = array('profile.php','transactions.php','stats.php');
+if (in_array(basename($_SERVER['PHP_SELF']),$reqs) && !($validsession)) {
+header('Location: login.php?redirect='.basename($_SERVER['PHP_SELF']));
+}
+$totalbets = $db->query("SELECT COUNT(*) as Num FROM `bets`")->fetchColumn();
+$betstoday = $db->query("SELECT COUNT(*) as Num FROM `bets` WHERE `bet_time` >= '".(floor(time()/86400)*86400)."'")->fetchColumn();
+?>
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title><?php echo "Crypto50"; if(isset($pagename)) { echo "- ".$pagename; } ?></title>
+	<meta name="description" content="Crypto50 is the only online gambling casino that supports multiple crypto-currencies. With an extremely low house edge and quick deposits of your favorite coins, why would you go anywhere else?"> 
+	<meta name="keywords" content="Crypto50, bitcoin, litecoin, feathercoin, namecoin, BTC, LTC, FTC, NMC, gambling, dice, game, bet, casino" />
+	
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon">
+	<link href='https://fonts.googleapis.com/css?family=Ubuntu+Condensed|Ubuntu' rel='stylesheet' type='text/css'>   
+	<link href='https://fonts.googleapis.com/css?family=PT+Sans+Narrow' rel='stylesheet' type='text/css'>
+	
+	<!-- CSS: implied media=all -->
+	<link rel="stylesheet" href="css/table.css">
+	<link rel="stylesheet" href="css/fullcalendar.css">
+	<link rel="stylesheet" href="css/simplemodal.css">
+	<link rel="stylesheet" href="css/jquery-ui.css">
+	<link rel="stylesheet" href="css/jquery.gritter.css">
+	<link rel="stylesheet" href="css/jquery.wysiwyg.css">
+	<link rel="stylesheet" href="css/chosen.css">
+	<link rel="stylesheet" href="css/jquery-ui-1.8.16.custom.css">
+	<link rel="stylesheet" href="css/elfinder.min.css">
+	<link rel="stylesheet" href="css/jqtransform.css">
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/v2.css">
+	<!-- end CSS-->
+	
+	<!--[if lt IE 9]>
+		<script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+		
+	<!-- All JavaScript at the bottom, except for Modernizr / Respond.
+		 Modernizr enables HTML5 elements & feature detects; Respond is a polyfill for min/max-width CSS3 Media Queries
+		 For optimal performance, use a custom Modernizr build: www.modernizr.com/download/ -->
+	<script src="js/libs/modernizr-2.0.6.min.js"></script>
+</head>
+
+<body>
+	<div id="leftHalf"></div>
+	<div id="body-container">
+		<div id="container">
+			<header>
+				<a href="http://www.crypto50.com/" id="logoimage"><img src="img/logo.png" alt="Crypto50"></a>
+
+				<div id="main-navigation">
+					<div id="sub-navigation"><b>Total Bets: <span id="totalbets"><?php echo $totalbets; ?></span> - - - Bets Today: <span id="betstoday"><?php echo $betstoday; ?></span></b>
+					</div>
+					<ul>
+						<li><a href="index.php" class="active" id="home-m"><span class="home-32" title="<?php echo $lang['homedesc']; ?>"><?php echo $lang['home']; ?></span></a></li>
+					</ul>
+					<ul>
+						<li><a href="transactions.php" class="active" id="transactions-m"><span class="finance-32" title="<?php echo $lang['transactionsdesc']; ?>"><?php echo $lang['transactions']; ?></span></a></li>
+					</ul>
+					<ul>
+						<li><a href="stats.php" class="active" id="statistics-m"><span class="charts-32" title="<?php echo $lang['statisticsdesc']; ?>"><?php echo $lang['statistics']; ?></span></a></li>
+					</ul>
+					<ul>
+						<li><a href="" class="active" id="newscontact-m"><span class="data-32" title="<?php echo $lang['newscontactdesc']; ?>"><?php echo $lang['newscontact']; ?></span></a></li>
+					</ul>
+				</div>
+				<div id="profile">
+					<div id="user-data"><?php echo $lang['welcome'] ?>: <?php if ($validsession) { echo "[<span id=\"user-id\">".$userid."</span>] ".$username; } else { echo 'Guest'; } ?></div>
+					<div class="clearfix"></div>
+					<div id="user-notifications">
+						<ul> 
+							<li><a href="<?php if ($validsession) { echo 'profile.php'; } else { echo 'register.php'; } ?>" id="button1" class="profile-16 tt-top-center" title="<?php if ($validsession) { echo $lang['profiledesc']; } else { echo $lang['registerdesc']; } ?>"><?php if ($validsession) { echo $lang['profile']; } else { echo $lang['register']; } ?></a></li>						
+							<li><a href="<?php if ($validsession) { echo 'logout.php'; } else { echo 'login.php'; } ?>" id="button2" class="logout-16 tt-top-center" title="<?php if ($validsession) { echo $lang['logoutdesc']; } else { echo $lang['logindesc']; } ?>"><?php if ($validsession) { echo $lang['logout']; } else { echo $lang['login']; } ?></a></li>
+						</ul>					
+						<div class="clearfix"></div>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div class="clearfix"></div>
+			</header>

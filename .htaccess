@@ -1,0 +1,20 @@
+<FILES update.php>
+order deny,allow
+deny from all
+allow from 205.186.178.27
+</FILES>
+<FILES updateall.php>
+order deny,allow
+deny from all
+allow from 205.186.178.27
+</FILES>
+<FILES header.html>
+order deny,allow
+deny from all
+allow from 205.186.178.27
+</FILES>
+<FILES footer.html>
+order deny,allow
+deny from all
+allow from 205.186.178.27
+</FILES>

@@ -1,0 +1,42 @@
+<div id="modal">
+<h1>Provably Fair System</h1>
+<p>Crypto50 offers the unique ability to verify that your roll was not manipulated in any way immediately. 
+Prior to hitting the "Roll" button, the user is given the choice to modify the roll parameters. The user may 
+modify whether or not they roll over or under a target roll value (which determines their return multiplier 
+and potential profit). Knowing this, Crypto50 pre-rolls a roll value which is then encrypted and can be
+be instantly decrypted into plain text afterwards using the encrypted roll value key. The decrypted plain 
+text will match the plain text roll value given after the roll to determine the bets outcome. Therefore, 
+you can prove that the roll value was generated before you clicked the "Roll" button, preventing us 
+from manipulating your bet after-the-fact.</p>
+<h4>How to verify a bet:</h4>
+<p>Bet Encrypted Roll Values are encrypted with RIJNDAEL_128 using a 32 character (256-bit) key and randomly 
+generated 16 character (128-bit) IV. The Encrypted Roll Value or ciphertext is the hex representation 
+of the IV appended to the front of the encrypted string. The Encrypted Roll Value's Key is also converted to hex.<br>
+<br>
+Steps to verify bet:<br>
+1. Click "Provably Fair Code" link and copy 64 character hexidecimal ciphercode to a notepad.<br>
+2. Change roll parameters to whatever you want and click "Roll" button.<br>
+3. Click "Transactions" link in the navigation bar.<br>
+4. Find the bet that you just made (should be at the very top), click the bet id number link for more information.<br>
+5. Verify that the Encrypted Roll Value is the same as you have copied.<br>
+6. Decrypt Encrypted Roll Value with the provided key in the information window<br>
+7. Decrypted value should match the bet roll.<br>
+<br>
+To decrypt the roll value, you must convert the hexadecimal strings back into binary and then use a decrypt 
+function with the key, iv, and encrypted string to get the resulting plain text.<br>
+<br>
+Example php code you can also use to decrypt bets:</p>
+<pre style="font-size:14px;">
+&lt;?php
+$ERV_key = ""; //Key to encrypted roll value
+$ERV = ""; //Encrypted roll value 
+
+$key = pack("H*",$ERV_key);
+$iv = pack("H*",substr($ERV, 0, 32));
+$data = pack("H*",substr($ERV, 32));
+
+$decrypt = mcrypt_decrypt(MCRYPT_RIJNDAEL_128, $key, $data, MCRYPT_MODE_CBC, $iv);
+echo $decrypt;
+?&gt;
+</pre>
+</div>
